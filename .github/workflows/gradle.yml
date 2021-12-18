@@ -25,7 +25,7 @@ jobs:
       - name: Execute build
         run: ./gradlew --info --stacktrace build
       - name: Execute jlinkZip
-        run: ./gradlew --info --stacktrace jlink
+        run: ./gradlew --info --stacktrace jlinkZip
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:

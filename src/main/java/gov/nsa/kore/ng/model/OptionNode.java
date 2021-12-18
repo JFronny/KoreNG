@@ -21,7 +21,7 @@ public class OptionNode extends AINode {
         if (result.hasErrors()) {
             StringBuilder issues = new StringBuilder("Discovered the following issues in the starscript " + scriptSource + ":");
             for (Error error : result.errors) {
-                issues.append('\n').append(error.toString()); //TODO utilize script source for enhanced debugging
+                issues.append('\n').append(error.toString());
             }
             throw new XmlException(issues.toString());
         }

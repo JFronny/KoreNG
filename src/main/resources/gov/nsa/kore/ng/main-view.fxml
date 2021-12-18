@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.textfield.*?>
@@ -19,7 +18,7 @@
         <VBox fx:id="dialogPane" />
     </ScrollPane>
     <HBox prefHeight="5.0" prefWidth="468.0">
-        <CustomTextField fx:id="inputBox" onAction="#evaluateInput" prefHeight="26.0" prefWidth="392.0" HBox.hgrow="ALWAYS">
+        <CustomTextField fx:id="inputBox" onAction="#evaluateInput" prefHeight="26.0" prefWidth="305.0" HBox.hgrow="ALWAYS">
             <left>
                 <Label>
                     <graphic>
@@ -28,6 +27,7 @@
                 </Label>
             </left>
         </CustomTextField>
-        <Button onAction="#evaluateInput" prefHeight="26.0" prefWidth="109.0" text="Evaluate" />
+        <Button onAction="#evaluateInput" prefHeight="26.0" prefWidth="80.0" text="Evaluate" />
+        <Button onAction="#loadAI" prefHeight="26.0" prefWidth="69.0" text="Load AI" />
     </HBox>
 </VBox>

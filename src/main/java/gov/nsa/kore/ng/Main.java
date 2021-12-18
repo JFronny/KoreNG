@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Main extends Application {
@@ -44,21 +45,16 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException, XmlException {
-        if (args.length == 0) {
-            System.err.println("No kng file specified"); //TODO allow selecting .kng file in UI
-            Thread.sleep(1000);
-            return;
+        if (args.length > 0 && !args[0].equals("--fast-splash")) {
+            loadAI(Path.of(args[0]));
         }
-        Path p = Path.of(args[0]);
-        if (!Files.exists(p)) {
-            System.err.println("Specified file doesn't exist");
-            Thread.sleep(1000);
-            return;
-        }
-        try (InputStream is = Files.newInputStream(p)) {
+        FAST_SPLASH = args.length >= 2 && Arrays.asList(args).contains("--fast-splash");
+        launch();
+    }
+
+    public static void loadAI(Path source) throws InterruptedException, IOException, XmlException {
+        try (InputStream is = Files.newInputStream(source)) {
             SELECTED_AI = XML.deserialize(is, AINode.class);
         }
-        FAST_SPLASH = args.length >= 2 && args[1].equals("--fast-splash");
-        launch();
     }
 }

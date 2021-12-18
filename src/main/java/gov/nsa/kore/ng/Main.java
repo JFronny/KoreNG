@@ -38,9 +38,10 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("splash.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 429, 265);
-        stage.initStyle(StageStyle.UTILITY);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Kore.NG v6");
         stage.setScene(scene);
+	    stage.setResizable(false);
         stage.show();
     }
 

@@ -14,7 +14,7 @@
     <Label text="Kore.NG v6" />
     <Label text="THIS PROJECT IS CONFIDENTIAL AND FOR INTERNAL EVALUATION ONLY" />
     <Label text="DO NOT DISTRIBUTE" />
-    <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+    <ScrollPane fx:id="dialogPaneContainer" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <VBox fx:id="dialogPane" />
     </ScrollPane>
     <HBox prefHeight="5.0" prefWidth="468.0">

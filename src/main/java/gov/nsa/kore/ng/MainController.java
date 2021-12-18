@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -25,6 +26,8 @@ public class MainController implements Initializable {
     public TextField inputBox;
     @FXML
     public FontIcon inputBoxIcon;
+    @FXML
+    public ScrollPane dialogPaneContainer;
     @FXML
     public VBox dialogPane;
 
@@ -53,6 +56,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         inputBox.textProperty().addListener(((observable, oldValue, newValue) -> selectIcon(newValue)));
+        dialogPaneContainer.vvalueProperty().bind(dialogPane.heightProperty());
     }
 
     @FXML

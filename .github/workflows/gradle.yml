@@ -24,10 +24,10 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
       - name: Execute build
         run: ./gradlew --info --stacktrace build
-      - name: Execute jlinkZip
-        run: ./gradlew --info --stacktrace jlinkZip
+      - name: Execute jlink
+        run: ./gradlew --info --stacktrace jlink
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: KoreNG-jdk${{ matrix.java }}-${{ matrix.os }}
-          path: build/image.zip
+          path: build/image/*

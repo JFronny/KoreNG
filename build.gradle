@@ -58,3 +58,12 @@ jlink {
         name = 'KoreNG'
     }
 }
+
+tasks.jlink.doLast {
+    copy {
+        from("${projectDir}") {
+            include "LICENSE", "KoreNG.bat", "KoreNG", "ai.kng"
+        }
+        into "${buildDir}/image"
+    }
+}

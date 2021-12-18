@@ -1,0 +1,16 @@
+<random>
+    <random chance="0.5">
+        <option chance="0.5" icon="fas-hammer">Meme</option>
+        <option chance="0.5" icon="far-star">Moskau</option>
+        <random regex="^Moskau (\d+)" icon="far-star-half">
+            <option chance="0.5">Joe {p0}</option>
+            <option chance="0.5">Moskau {p1}</option>
+        </random>
+    </random>
+    <option chance="0.5" icon="fas-calculator">Test</option>
+    <down icon="fas-hamburger">
+        <option regex="^Halal (.+)">{p1} is very good</option>
+        <option regex="^Haram (.+)">{p1} is bad</option>
+        <option>I didn't get that</option>
+    </down>
+</random>

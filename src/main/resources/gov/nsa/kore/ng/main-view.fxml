@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.textfield.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.nsa.kore.ng.MainController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label text="Kore.NG v6" />
+    <Label text="THIS PROJECT IS CONFIDENTIAL AND FOR INTERNAL EVALUATION ONLY" />
+    <Label text="DO NOT DISTRIBUTE" />
+    <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <VBox fx:id="dialogPane" />
+    </ScrollPane>
+    <HBox prefHeight="5.0" prefWidth="468.0">
+        <CustomTextField fx:id="inputBox" onAction="#evaluateInput" prefHeight="26.0" prefWidth="392.0" HBox.hgrow="ALWAYS">
+            <left>
+                <Label>
+                    <graphic>
+                        <FontIcon fx:id="inputBoxIcon" iconLiteral="far-comment" iconSize="13" />
+                    </graphic>
+                </Label>
+            </left>
+        </CustomTextField>
+        <Button onAction="#evaluateInput" prefHeight="26.0" prefWidth="109.0" text="Evaluate" />
+    </HBox>
+</VBox>

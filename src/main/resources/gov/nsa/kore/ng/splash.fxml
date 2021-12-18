@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="rootPane" prefHeight="265" prefWidth="429" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.nsa.kore.ng.SplashController">
+    <ImageView fitHeight="255" fitWidth="429" pickOnBounds="true" preserveRatio="true">
+        <Image url="@splash.jpg"/>
+    </ImageView>
+    <ProgressBar fx:id="progressBar" prefHeight="10" prefWidth="429" progress="0.0" style="-fx-background-color: black;"/>
+</VBox>

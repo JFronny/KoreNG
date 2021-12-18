@@ -1,2 +1,2 @@
 @echo off
-.\bin\KoreNG.bat ai.kng
+%~dp0\bin\KoreNG.bat %~dp0\ai.kng

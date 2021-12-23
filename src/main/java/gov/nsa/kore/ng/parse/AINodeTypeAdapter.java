@@ -11,12 +11,16 @@ public record AINodeTypeAdapter<T extends AINode>(TypeAdapter<T> inner) implemen
     private static final String CHANCE = "chance";
     private static final String ICON = "icon";
     private static final String REGEX = "regex";
+    private static final String ID = "id";
+    private static final String CONTINUE = "continue";
     @Override
     public T deserialize(Element node, XmlParser parser) throws XmlException {
         T val = inner.deserialize(node, parser);
         if (node.hasAttribute(CHANCE)) val.setChance(Double.parseDouble(node.getAttribute(CHANCE)));
         if (node.hasAttribute(ICON)) val.setIcon(node.getAttribute(ICON));
         if (node.hasAttribute(REGEX)) val.setRegex(node.getAttribute(REGEX));
+        if (node.hasAttribute(ID)) val.setId(node.getAttribute(ID));
+        if (node.hasAttribute(CONTINUE)) val.setContinueNode(node.getAttribute(CONTINUE));
         return val;
     }
 
@@ -27,6 +31,8 @@ public record AINodeTypeAdapter<T extends AINode>(TypeAdapter<T> inner) implemen
         String ic = value.getIcon(null);
         if (ic != null) node.setAttribute(ICON, ic);
         if (value.getRegex() != null) node.setAttribute(REGEX, value.getRegex());
+        if (value.getId() != null) node.setAttribute(ID, value.getId());
+        if (value.getContinueNode() != null) node.setAttribute(CONTINUE, value.getContinueNode());
     }
 
     @Override

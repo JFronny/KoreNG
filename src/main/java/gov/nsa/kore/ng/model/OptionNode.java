@@ -1,12 +1,14 @@
 package gov.nsa.kore.ng.model;
 
 import gov.nsa.kore.ng.Main;
+import gov.nsa.kore.ng.util.EvaluationException;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.xml.XmlException;
 import meteordevelopment.starscript.Script;
 import meteordevelopment.starscript.compiler.Compiler;
 import meteordevelopment.starscript.compiler.Parser;
 import meteordevelopment.starscript.utils.Error;
+import meteordevelopment.starscript.utils.StarscriptError;
 import meteordevelopment.starscript.value.Value;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class OptionNode extends AINode {
     }
 
     @Override
-    public String evaluateImpl(String input, List<String> parameters) {
+    public EvaluateResult evaluateImpl(String input, List<String> parameters) throws EvaluationException {
         for (int i = 0, parametersSize = parameters.size(); i < parametersSize; i++) {
             String parameter = parameters.get(i);
             Value value;
@@ -41,7 +43,15 @@ public class OptionNode extends AINode {
                 value = Value.string(parameter);
             Main.STAR_SCRIPT.set("p" + i, value);
         }
-        return Main.STAR_SCRIPT.run(script);
+        try {
+            String result = Main.STAR_SCRIPT.run(script);
+            return getContinueNode() == null
+                    ? EvaluateResult.success(result)
+                    : EvaluateResult.success(result, getContinueNode());
+        }
+        catch (StarscriptError error) {
+            throw new EvaluationException("Could not execute starscript", error);
+        }
     }
 
     public String getScriptSource() {

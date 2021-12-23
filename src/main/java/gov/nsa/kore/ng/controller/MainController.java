@@ -1,6 +1,9 @@
 package gov.nsa.kore.ng.controller;
 
 import gov.nsa.kore.ng.Main;
+import gov.nsa.kore.ng.model.AINode;
+import gov.nsa.kore.ng.model.EvaluateResult;
+import gov.nsa.kore.ng.util.EvaluationException;
 import gov.nsa.kore.ng.util.FakeLoadingProvider;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.TextEntry;
@@ -18,11 +21,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +39,7 @@ public class MainController implements Initializable {
     public ScrollPane dialogPaneContainer;
     @FXML
     public VBox dialogPane;
+    private AINode continueNode = null;
 
     @FXML
     protected void evaluateInput() {
@@ -47,11 +51,25 @@ public class MainController implements Initializable {
             }
             else {
                 dialogPane.getChildren().add(new TextEntry("fas-long-arrow-alt-right", s));
+                AINode current = getNode();
+                continueNode = null;
                 try {
-                    dialogPane.getChildren().add(new TextEntry(inputBoxIcon.getIconLiteral(), Main.SELECTED_AI.evaluate(s, new LinkedList<>(Set.of(s)))));
-                }
-                catch (Throwable t) {
-                    showError(t);
+                    EvaluateResult result = current.evaluate(s, new LinkedList<>(Set.of(s)));
+                    if (result.success()) {
+                        dialogPane.getChildren().add(new TextEntry(inputBoxIcon.getIconLiteral(), result.result().get()));
+                        if (result.continueNode().isPresent()) {
+                            Optional<AINode> ain = Main.SELECTED_AI.getNodeById(result.continueNode().get());
+                            if (ain.isPresent())
+                                continueNode = ain.get();
+                            else
+                                showError("Could not find AI Node: " + result.continueNode().get());
+                        }
+                    }
+                    else {
+                        showError(result.result().isPresent() ? result.result().get() : "Failed to execute");
+                    }
+                } catch (EvaluationException e) {
+                    showError(e);
                 }
                 inputBox.setText("");
                 Main.STAR_SCRIPT.clear();
@@ -92,7 +110,11 @@ public class MainController implements Initializable {
     }
 
     private void showError(Throwable t) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, t.toString(), ButtonType.OK);
+        showError(t.toString());
+    }
+
+    private void showError(String t) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, t, ButtonType.OK);
         alert.show();
     }
 
@@ -100,6 +122,10 @@ public class MainController implements Initializable {
         if (RegexUtil.WHITESPACE.test(inputText))
             inputBoxIcon.setIconLiteral("far-comment");
         else
-            inputBoxIcon.setIconLiteral(Main.SELECTED_AI == null ? "far-comment-dots" : Main.SELECTED_AI.getIcon(inputText));
+            inputBoxIcon.setIconLiteral(Main.SELECTED_AI == null ? "far-comment-dots" : getNode().getIcon(inputText));
+    }
+
+    private AINode getNode() {
+        return continueNode == null ? Main.SELECTED_AI : continueNode;
     }
 }

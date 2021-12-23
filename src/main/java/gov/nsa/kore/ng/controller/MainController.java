@@ -1,11 +1,15 @@
-package gov.nsa.kore.ng;
+package gov.nsa.kore.ng.controller;
 
+import gov.nsa.kore.ng.Main;
+import gov.nsa.kore.ng.util.FakeLoadingProvider;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.TextEntry;
 import gov.nsa.kore.ng.util.xml.XmlException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
@@ -14,12 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController implements Initializable {
     @FXML
@@ -60,16 +66,28 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void loadAI() {
+    public void loadKore(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Kore.NG AI", "*.kng"));
         File file = fileChooser.showOpenDialog(dialogPane.getScene().getWindow());
         if (file != null) {
+            AtomicReference<LoadingProvider> c = new AtomicReference<>();
             try {
-                Main.loadAI(file.toPath());
-                selectIcon(inputBox.getText());
-            } catch (InterruptedException | IOException | XmlException e) {
-                showError(e);
+                c.set(LoadingController.show("Loading AI", ((Node)event.getSource()).getScene().getWindow()));
+            } catch (IOException e) {
+                Platform.runLater(() -> showError(e));
             }
+            new Thread(() -> {
+                try {
+                    Main.loadAI(file.toPath());
+                    selectIcon(inputBox.getText());
+                    FakeLoadingProvider.provideFakeLoad(true, c.get()::setProgress);
+                } catch (InterruptedException | IOException | XmlException e) {
+                    showError(e);
+                } finally {
+                    c.get().close();
+                }
+            }).start();
         }
     }
 

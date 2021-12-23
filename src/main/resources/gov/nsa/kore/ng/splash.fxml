@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="rootPane" prefHeight="265" prefWidth="429" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.nsa.kore.ng.SplashController">
+<VBox fx:id="rootPane" prefHeight="265" prefWidth="429" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.nsa.kore.ng.controller.SplashController">
     <ImageView fitHeight="255" fitWidth="429" pickOnBounds="true" preserveRatio="true">
         <Image url="@splash.jpg"/>
     </ImageView>

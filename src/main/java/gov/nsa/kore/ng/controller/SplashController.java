@@ -1,5 +1,7 @@
-package gov.nsa.kore.ng;
+package gov.nsa.kore.ng.controller;
 
+import gov.nsa.kore.ng.Main;
+import gov.nsa.kore.ng.util.FakeLoadingProvider;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class SplashController implements Initializable {
@@ -21,21 +22,14 @@ public class SplashController implements Initializable {
     @FXML
     public ProgressBar progressBar;
 
-    private final Random rnd = new Random();
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         new Thread(() -> {
             try {
-                for (int i = 0; i < 100; i++) {
-                    if (rnd.nextDouble() < 0.02)
-                        Thread.sleep(500);
-                    Thread.sleep(rnd.nextInt(Main.FAST_SPLASH ? 10 : 20, Main.FAST_SPLASH ? 30 : 100));
-                    progressBar.setProgress(i * 0.01);
-                }
+                FakeLoadingProvider.provideFakeLoad(Main.FAST_SPLASH, progressBar::setProgress);
                 Platform.runLater(() -> {
                     try {
-                        Parent root = FXMLLoader.load(SplashController.class.getResource("main-view.fxml"));
+                        Parent root = FXMLLoader.load(Main.class.getResource("main-view.fxml"));
                         Scene scene = new Scene(root);
                         Stage stage = new Stage();
                         stage.setScene(scene);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="84.0" prefWidth="324.0" xmlns="http://javafx.com/javafx/11.0.2"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.nsa.kore.ng.controller.LoadingController">
+    <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading..."/>
+    <ProgressBar fx:id="loading" prefHeight="23.0" prefWidth="308.0" progress="0.0"/>
+</VBox>

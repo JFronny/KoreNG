@@ -1,12 +1,12 @@
 <random>
-    <random chance="0.5" id="moskau" continue="test">
-        <option chance="0.5" icon="fas-hammer">Meme</option>
+    <all chance="0.5" id="moskau" continue="test">
+        <option regex="(.*)" chance="0.5" icon="fas-hammer">Meme {p1}</option>
         <option chance="0.5" icon="far-star">Moskau</option>
         <random regex="^Moskau (\d+)" icon="far-star-half">
             <option chance="0.5">Joe {p0}</option>
-            <option chance="0.5">Moskau {p1 + 4}</option>
+            <option chance="0.5">Biden {p1 + 4}</option>
         </random>
-    </random>
+    </all>
     <option chance="0.5" icon="fas-calculator" id="test">Test</option>
     <down icon="fas-hamburger" continue="moskau">
         <option regex="^Halal (.+)">{p1} is very good</option>

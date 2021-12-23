@@ -1,8 +1,9 @@
-package gov.nsa.kore.ng.model;
+package gov.nsa.kore.ng.model.node;
 
-import gov.nsa.kore.ng.util.EvaluationException;
+import gov.nsa.kore.ng.model.EvaluationParameter;
+import gov.nsa.kore.ng.model.EvaluationResult;
+import gov.nsa.kore.ng.model.EvaluationException;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class DownNode extends AINode {
     }
 
     @Override
-    protected EvaluateResult evaluateImpl(String input, List<String> parameters) throws EvaluationException {
+    protected EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
         if (chosenNode == null) chooseNode(input);
         return chosenNode.evaluate(input, parameters).orContinue(getContinueNode());
     }

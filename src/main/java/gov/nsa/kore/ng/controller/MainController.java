@@ -1,9 +1,9 @@
 package gov.nsa.kore.ng.controller;
 
 import gov.nsa.kore.ng.Main;
-import gov.nsa.kore.ng.model.AINode;
-import gov.nsa.kore.ng.model.EvaluateResult;
-import gov.nsa.kore.ng.util.EvaluationException;
+import gov.nsa.kore.ng.model.EvaluationParameter;
+import gov.nsa.kore.ng.model.node.AINode;
+import gov.nsa.kore.ng.model.EvaluationResult;
 import gov.nsa.kore.ng.util.FakeLoadingProvider;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.TextEntry;
@@ -24,10 +24,8 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController implements Initializable {
@@ -53,23 +51,19 @@ public class MainController implements Initializable {
                 dialogPane.getChildren().add(new TextEntry("fas-long-arrow-alt-right", s));
                 AINode current = getNode();
                 continueNode = null;
-                try {
-                    EvaluateResult result = current.evaluate(s, new LinkedList<>(Set.of(s)));
-                    if (result.success()) {
-                        dialogPane.getChildren().add(new TextEntry(inputBoxIcon.getIconLiteral(), result.result().get()));
-                        if (result.continueNode().isPresent()) {
-                            Optional<AINode> ain = Main.SELECTED_AI.getNodeById(result.continueNode().get());
-                            if (ain.isPresent())
-                                continueNode = ain.get();
-                            else
-                                showError("Could not find AI Node: " + result.continueNode().get());
-                        }
+                EvaluationResult result = current.evaluate(s, new EvaluationParameter(s));
+                if (result.success()) {
+                    dialogPane.getChildren().add(new TextEntry(inputBoxIcon.getIconLiteral(), result.result().isPresent() ? result.result().get() : "<No Answer>"));
+                    if (result.continueNode().isPresent()) {
+                        Optional<AINode> ain = Main.SELECTED_AI.getNodeById(result.continueNode().get());
+                        if (ain.isPresent())
+                            continueNode = ain.get();
+                        else
+                            showError("Could not find AI Node: " + result.continueNode().get());
                     }
-                    else {
-                        showError(result.result().isPresent() ? result.result().get() : "Failed to execute");
-                    }
-                } catch (EvaluationException e) {
-                    showError(e);
+                }
+                else {
+                    showError(result.result().isPresent() ? result.result().get() : "Failed to execute");
                 }
                 inputBox.setText("");
                 Main.STAR_SCRIPT.clear();
@@ -93,7 +87,7 @@ public class MainController implements Initializable {
             try {
                 c.set(LoadingController.show("Loading AI", ((Node)event.getSource()).getScene().getWindow()));
             } catch (IOException e) {
-                Platform.runLater(() -> showError(e));
+                showError(e);
             }
             new Thread(() -> {
                 try {
@@ -101,7 +95,7 @@ public class MainController implements Initializable {
                     selectIcon(inputBox.getText());
                     FakeLoadingProvider.provideFakeLoad(true, c.get()::setProgress);
                 } catch (InterruptedException | IOException | XmlException e) {
-                    showError(e);
+                    Platform.runLater(() -> showError(e));
                 } finally {
                     c.get().close();
                 }

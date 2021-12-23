@@ -1,6 +1,6 @@
 package gov.nsa.kore.ng.parse;
 
-import gov.nsa.kore.ng.model.OptionNode;
+import gov.nsa.kore.ng.model.node.OptionNode;
 import gov.nsa.kore.ng.util.xml.NodeBuilder;
 import gov.nsa.kore.ng.util.xml.TypeAdapter;
 import gov.nsa.kore.ng.util.xml.XmlException;

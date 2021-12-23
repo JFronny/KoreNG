@@ -1,7 +1,9 @@
-package gov.nsa.kore.ng.model;
+package gov.nsa.kore.ng.model.node;
 
 import gov.nsa.kore.ng.Main;
-import gov.nsa.kore.ng.util.EvaluationException;
+import gov.nsa.kore.ng.model.EvaluationParameter;
+import gov.nsa.kore.ng.model.EvaluationResult;
+import gov.nsa.kore.ng.model.EvaluationException;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.xml.XmlException;
 import meteordevelopment.starscript.Script;
@@ -10,8 +12,6 @@ import meteordevelopment.starscript.compiler.Parser;
 import meteordevelopment.starscript.utils.Error;
 import meteordevelopment.starscript.utils.StarscriptError;
 import meteordevelopment.starscript.value.Value;
-
-import java.util.List;
 
 public class OptionNode extends AINode {
     private final Script script;
@@ -31,9 +31,9 @@ public class OptionNode extends AINode {
     }
 
     @Override
-    public EvaluateResult evaluateImpl(String input, List<String> parameters) throws EvaluationException {
-        for (int i = 0, parametersSize = parameters.size(); i < parametersSize; i++) {
-            String parameter = parameters.get(i);
+    public EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
+        for (int i = 0, parametersSize = parameters.parameters().size(); i < parametersSize; i++) {
+            String parameter = parameters.parameters().get(i);
             Value value;
             if (RegexUtil.DOUBLE.test(parameter))
                 value = Value.number(Double.parseDouble(parameter));
@@ -44,10 +44,7 @@ public class OptionNode extends AINode {
             Main.STAR_SCRIPT.set("p" + i, value);
         }
         try {
-            String result = Main.STAR_SCRIPT.run(script);
-            return getContinueNode() == null
-                    ? EvaluateResult.success(result)
-                    : EvaluateResult.success(result, getContinueNode());
+            return EvaluationResult.success(Main.STAR_SCRIPT.run(script), getContinueNode());
         }
         catch (StarscriptError error) {
             throw new EvaluationException("Could not execute starscript", error);

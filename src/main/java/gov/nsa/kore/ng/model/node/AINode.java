@@ -1,9 +1,10 @@
-package gov.nsa.kore.ng.model;
+package gov.nsa.kore.ng.model.node;
 
 import gov.nsa.kore.ng.Main;
-import gov.nsa.kore.ng.util.EvaluationException;
+import gov.nsa.kore.ng.model.EvaluationParameter;
+import gov.nsa.kore.ng.model.EvaluationResult;
+import gov.nsa.kore.ng.model.EvaluationException;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -21,17 +22,21 @@ public abstract class AINode {
                 && (!considerChance || chance == null || Main.RND.nextDouble() <= chance);
     }
 
-    protected abstract EvaluateResult evaluateImpl(String input, List<String> parameters) throws EvaluationException;
+    protected abstract EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException;
 
-    public EvaluateResult evaluate(String input, List<String> parameters) throws EvaluationException {
+    public EvaluationResult evaluate(String input, EvaluationParameter parameters) {
         if (regex != null) {
             Matcher matcher = regex.matcher(input);
-            if (!matcher.find()) return EvaluateResult.fail("Attempted to evaluate AINode to which this input doesn't apply");
+            if (!matcher.find()) return EvaluationResult.fail("Attempted to evaluate AINode to which this input doesn't apply");
             for (int i = 0; i < matcher.groupCount(); i++) {
-                parameters.add(matcher.group(i + 1));
+                parameters.parameters().add(matcher.group(i + 1));
             }
         }
-        return evaluateImpl(input, parameters);
+        try {
+            return evaluateImpl(input, parameters);
+        } catch (EvaluationException e) {
+            return EvaluationResult.fail(e.toString());
+        }
     }
 
     public String getIcon(String input) {

@@ -1,7 +1,7 @@
 package gov.nsa.kore.ng.parse;
 
 import gov.nsa.kore.ng.model.node.AINode;
-import gov.nsa.kore.ng.model.node.RandomSelectNode;
+import gov.nsa.kore.ng.model.node.AllNode;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.xml.NodeBuilder;
 import gov.nsa.kore.ng.util.xml.TypeAdapter;
@@ -15,9 +15,9 @@ import org.w3c.dom.Text;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class RandomSelectNodeTypeAdapter implements TypeAdapter<RandomSelectNode> {
+public class AllNodeTypeAdapter implements TypeAdapter<AllNode> {
     @Override
-    public RandomSelectNode deserialize(Element node, XmlParser parser) throws XmlException {
+    public AllNode deserialize(Element node, XmlParser parser) throws XmlException {
         NodeList children = node.getChildNodes();
         Set<AINode> aiNodes = new LinkedHashSet<>();
         for (int i = 0; i < children.getLength(); i++) {
@@ -30,14 +30,14 @@ public class RandomSelectNodeTypeAdapter implements TypeAdapter<RandomSelectNode
                     if (RegexUtil.WHITESPACE.test(text.getWholeText()))
                         continue;
                 }
-                throw new XmlException("Expected DownNode to only contain other full nodes, not " + childNode + " (" + childNode.getClass() + ")");
+                throw new XmlException("Expected AllNode to only contain other full nodes, not " + childNode + " (" + childNode.getClass() + ")");
             }
         }
-        return new RandomSelectNode(aiNodes);
+        return new AllNode(aiNodes);
     }
 
     @Override
-    public void serializeTo(Element node, RandomSelectNode value, XmlParser parser, NodeBuilder builder) throws XmlException {
+    public void serializeTo(Element node, AllNode value, XmlParser parser, NodeBuilder builder) throws XmlException {
         for (AINode child : value.getChildren()) {
             TypeAdapter<AINode> adapter = (TypeAdapter<AINode>) parser.getAdapter(child.getClass(), null);
             Element childNode = builder.createElement(adapter.getNodeName());
@@ -48,6 +48,6 @@ public class RandomSelectNodeTypeAdapter implements TypeAdapter<RandomSelectNode
 
     @Override
     public String getNodeName() {
-        return "random";
+        return "all";
     }
 }

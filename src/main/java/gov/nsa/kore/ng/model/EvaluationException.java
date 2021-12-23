@@ -1,4 +1,4 @@
-package gov.nsa.kore.ng.util;
+package gov.nsa.kore.ng.model;
 
 public class EvaluationException extends Exception {
     public EvaluationException(String message) {

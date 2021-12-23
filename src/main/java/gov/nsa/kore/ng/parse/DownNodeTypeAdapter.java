@@ -1,7 +1,7 @@
 package gov.nsa.kore.ng.parse;
 
-import gov.nsa.kore.ng.model.AINode;
-import gov.nsa.kore.ng.model.DownNode;
+import gov.nsa.kore.ng.model.node.AINode;
+import gov.nsa.kore.ng.model.node.DownNode;
 import gov.nsa.kore.ng.util.RegexUtil;
 import gov.nsa.kore.ng.util.xml.NodeBuilder;
 import gov.nsa.kore.ng.util.xml.TypeAdapter;

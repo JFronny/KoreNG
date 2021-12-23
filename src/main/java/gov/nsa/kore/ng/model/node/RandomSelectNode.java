@@ -1,6 +1,8 @@
-package gov.nsa.kore.ng.model;
+package gov.nsa.kore.ng.model.node;
 
-import gov.nsa.kore.ng.util.EvaluationException;
+import gov.nsa.kore.ng.model.EvaluationParameter;
+import gov.nsa.kore.ng.model.EvaluationResult;
+import gov.nsa.kore.ng.model.EvaluationException;
 
 import java.util.*;
 
@@ -16,7 +18,7 @@ public class RandomSelectNode extends AINode {
     }
 
     @Override
-    public EvaluateResult evaluateImpl(String input, List<String> parameters) throws EvaluationException {
+    public EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
         if (chosenNode == null) chooseNode(input);
         return chosenNode.evaluate(input, parameters).orContinue(getContinueNode());
     }

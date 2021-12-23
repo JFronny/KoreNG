@@ -18,4 +18,6 @@ module gov.nsa.kore.ng {
     opens gov.nsa.kore.ng.util to javafx.fxml;
     exports gov.nsa.kore.ng.controller;
     opens gov.nsa.kore.ng.controller to javafx.fxml;
+    exports gov.nsa.kore.ng.model.node;
+    opens gov.nsa.kore.ng.model to javafx.fxml;
 }

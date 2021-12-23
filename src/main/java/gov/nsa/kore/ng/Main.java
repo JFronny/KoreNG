@@ -1,13 +1,7 @@
 package gov.nsa.kore.ng;
 
-import gov.nsa.kore.ng.model.AINode;
-import gov.nsa.kore.ng.model.DownNode;
-import gov.nsa.kore.ng.model.OptionNode;
-import gov.nsa.kore.ng.model.RandomSelectNode;
-import gov.nsa.kore.ng.parse.AINodeTypeAdapter;
-import gov.nsa.kore.ng.parse.DownNodeTypeAdapter;
-import gov.nsa.kore.ng.parse.OptionNodeTypeAdapter;
-import gov.nsa.kore.ng.parse.RandomSelectNodeTypeAdapter;
+import gov.nsa.kore.ng.model.node.*;
+import gov.nsa.kore.ng.parse.*;
 import gov.nsa.kore.ng.util.ClearScript;
 import gov.nsa.kore.ng.util.xml.XmlException;
 import gov.nsa.kore.ng.util.xml.XmlParser;
@@ -28,7 +22,8 @@ public class Main extends Application {
     public static final XmlParser XML = new XmlParser()
             .register(DownNode.class, new AINodeTypeAdapter<>(new DownNodeTypeAdapter()))
             .register(OptionNode.class, new AINodeTypeAdapter<>(new OptionNodeTypeAdapter()))
-            .register(RandomSelectNode.class, new AINodeTypeAdapter<>(new RandomSelectNodeTypeAdapter()));
+            .register(RandomSelectNode.class, new AINodeTypeAdapter<>(new RandomSelectNodeTypeAdapter()))
+            .register(AllNode.class, new AINodeTypeAdapter<>(new AllNodeTypeAdapter()));
     public static final ClearScript STAR_SCRIPT = new ClearScript();
     public static final Random RND = new Random(1024);
     public static AINode SELECTED_AI;

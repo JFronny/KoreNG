@@ -1,16 +1,23 @@
-<random>
-    <all chance="0.5" id="moskau" continue="test">
-        <option regex="(.*)" chance="0.5" icon="fas-hammer">Meme {p1}</option>
-        <option chance="0.5" icon="far-star">Moskau</option>
+<down>
+    <down icon="fas-hamburger" continue="moskau" id="start">
+        <all regex="^Halal (.+)">
+            <option>{p1} is very good</option>
+            <store id="halal">true</store>
+        </all>
+        <all regex="^Haram (.+)">
+            <option>{p1} is bad</option>
+            <store id="halal">false</store>
+        </all>
+        <option continue="start">I didn't get that</option>
+    </down>
+    <all id="moskau" continue="test">
+        <option regex="(.*)" chance="0.8" icon="fas-hammer">Meme {p1}</option>
+        <option chance="0.8" icon="far-star">Moskau</option>
         <random regex="^Moskau (\d+)" icon="far-star-half">
             <option chance="0.5">Joe {p0}</option>
             <option chance="0.5">Biden {p1 + 4}</option>
         </random>
+        <store id="input">You entered {p0}</store>
     </all>
-    <option chance="0.5" icon="fas-calculator" id="test">Test</option>
-    <down icon="fas-hamburger" continue="moskau">
-        <option regex="^Halal (.+)">{p1} is very good</option>
-        <option regex="^Haram (.+)">{p1} is bad</option>
-        <option>I didn't get that</option>
-    </down>
-</random>
+    <option icon="fas-calculator" id="test">{global.input} (also: you chose {global.halal ? "something halal" : "a haram thing"})</option>
+</down>

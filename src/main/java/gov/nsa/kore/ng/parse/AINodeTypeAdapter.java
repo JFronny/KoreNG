@@ -8,11 +8,11 @@ import gov.nsa.kore.ng.util.xml.XmlParser;
 import org.w3c.dom.Element;
 
 public record AINodeTypeAdapter<T extends AINode>(TypeAdapter<T> inner) implements TypeAdapter<T> {
-    private static final String CHANCE = "chance";
-    private static final String ICON = "icon";
-    private static final String REGEX = "regex";
-    private static final String ID = "id";
-    private static final String CONTINUE = "continue";
+    public static final String CHANCE = "chance";
+    public static final String ICON = "icon";
+    public static final String REGEX = "regex";
+    public static final String ID = "id";
+    public static final String CONTINUE = "continue";
     @Override
     public T deserialize(Element node, XmlParser parser) throws XmlException {
         T val = inner.deserialize(node, parser);

@@ -23,7 +23,8 @@ public class Main extends Application {
             .register(DownNode.class, new AINodeTypeAdapter<>(new DownNodeTypeAdapter()))
             .register(OptionNode.class, new AINodeTypeAdapter<>(new OptionNodeTypeAdapter()))
             .register(RandomSelectNode.class, new AINodeTypeAdapter<>(new RandomSelectNodeTypeAdapter()))
-            .register(AllNode.class, new AINodeTypeAdapter<>(new AllNodeTypeAdapter()));
+            .register(AllNode.class, new AINodeTypeAdapter<>(new AllNodeTypeAdapter()))
+            .register(StoreNode.class, new AINodeTypeAdapter<>(new StoreNodeTypeAdapter()));
     public static final ClearScript STAR_SCRIPT = new ClearScript();
     public static final Random RND = new Random(1024);
     public static AINode SELECTED_AI;

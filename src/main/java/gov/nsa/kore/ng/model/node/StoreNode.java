@@ -11,11 +11,11 @@ import meteordevelopment.starscript.compiler.Parser;
 import meteordevelopment.starscript.utils.Error;
 import meteordevelopment.starscript.utils.StarscriptError;
 
-public class OptionNode extends AINode {
+public class StoreNode extends AINode {
     private final Script script;
     private final String scriptSource;
 
-    public OptionNode(String scriptSource) throws XmlException {
+    public StoreNode(String scriptSource) throws XmlException {
         this.scriptSource = scriptSource;
         Parser.Result result = Parser.parse(scriptSource);
         if (result.hasErrors()) {
@@ -29,10 +29,11 @@ public class OptionNode extends AINode {
     }
 
     @Override
-    public EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
+    protected EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
         parameters.loadValues(Main.STAR_SCRIPT);
         try {
-            return EvaluationResult.success(Main.STAR_SCRIPT.run(script), getContinueNode());
+            Main.STAR_SCRIPT.global.set(getId(), Main.STAR_SCRIPT.buildValue(Main.STAR_SCRIPT.run(script)));
+            return EvaluationResult.success(null, getContinueNode());
         }
         catch (StarscriptError error) {
             throw new EvaluationException("Could not execute starscript", error);

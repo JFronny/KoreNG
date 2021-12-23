@@ -8,11 +8,11 @@ public record EvaluationResult(boolean success, Optional<String> result, Optiona
     }
 
     public static EvaluationResult success(String message) {
-        return new EvaluationResult(true, Optional.of(message), Optional.empty());
+        return success(message, null);
     }
 
     public static EvaluationResult success(String message, String continueNode) {
-        return new EvaluationResult(true, Optional.of(message), continueNode == null ? Optional.empty() : Optional.of(continueNode));
+        return new EvaluationResult(true, message == null ? Optional.empty() : Optional.of(message), continueNode == null ? Optional.empty() : Optional.of(continueNode));
     }
 
     public EvaluationResult orContinue(String continueNode) {

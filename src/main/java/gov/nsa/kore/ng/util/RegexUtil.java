@@ -10,6 +10,6 @@ public class RegexUtil {
                     "([eE][+-]?(\\p{Digit}+))?)|(\\.((\\p{Digit}+))([eE][+-]?(\\p{Digit}+))?)|" +
                     "(((0[xX](\\p{XDigit}+)(\\.)?)|(0[xX](\\p{XDigit}+)?(\\.)(\\p{XDigit}+)))" +
                     "[pP][+-]?(\\p{Digit}+)))[fFdD]?))[\\x00-\\x20]*").asMatchPredicate();
-    public static final Predicate<String> BOOL = Pattern.compile("(?i)(true)|(false)").asMatchPredicate();
-    public static final Predicate<String> TRUE = Pattern.compile("(?i)(true)").asMatchPredicate();
+    public static final Predicate<String> BOOL = Pattern.compile("(?i)(true|yes|false|no)").asMatchPredicate();
+    public static final Predicate<String> TRUE = Pattern.compile("(?i)(true|yes)").asMatchPredicate();
 }

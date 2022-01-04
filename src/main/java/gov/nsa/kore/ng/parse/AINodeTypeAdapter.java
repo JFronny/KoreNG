@@ -32,7 +32,7 @@ public record AINodeTypeAdapter<T extends AINode>(TypeAdapter<T> inner) implemen
         if (ic != null) node.setAttribute(ICON, ic);
         if (value.getRegex() != null) node.setAttribute(REGEX, value.getRegex());
         if (value.getId() != null) node.setAttribute(ID, value.getId());
-        if (value.getContinueNode() != null) node.setAttribute(CONTINUE, value.getContinueNode());
+        if (value.getContinueNode() != null) node.setAttribute(CONTINUE, value.getContinueNodeName());
     }
 
     @Override

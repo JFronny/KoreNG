@@ -1,6 +1,7 @@
 package gov.nsa.kore.ng.controller;
 
 import gov.nsa.kore.ng.Main;
+import gov.nsa.kore.ng.model.EvaluationException;
 import gov.nsa.kore.ng.model.EvaluationParameter;
 import gov.nsa.kore.ng.model.node.AINode;
 import gov.nsa.kore.ng.model.EvaluationResult;
@@ -55,11 +56,7 @@ public class MainController implements Initializable {
                 if (result.success()) {
                     dialogPane.getChildren().add(new TextEntry(inputBoxIcon.getIconLiteral(), result.result().isPresent() ? result.result().get() : "<No Answer>"));
                     if (result.continueNode().isPresent()) {
-                        Optional<AINode> ain = Main.SELECTED_AI.getNodeById(result.continueNode().get());
-                        if (ain.isPresent())
-                            continueNode = ain.get();
-                        else
-                            showError("Could not find AI Node: " + result.continueNode().get());
+                        continueNode = result.continueNode().get();
                     }
                 }
                 else {
@@ -94,7 +91,7 @@ public class MainController implements Initializable {
                     Main.loadAI(file.toPath());
                     selectIcon(inputBox.getText());
                     FakeLoadingProvider.provideFakeLoad(true, c.get()::setProgress);
-                } catch (InterruptedException | IOException | XmlException e) {
+                } catch (InterruptedException | IOException | XmlException | EvaluationException e) {
                     Platform.runLater(() -> showError(e));
                 } finally {
                     c.get().close();

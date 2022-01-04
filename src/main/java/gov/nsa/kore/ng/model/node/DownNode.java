@@ -22,6 +22,13 @@ public class DownNode extends AINode {
     }
 
     @Override
+    protected void initializeImpl(AINode rootNode) throws EvaluationException {
+        for (AINode node : nodes) {
+            node.initialize(rootNode);
+        }
+    }
+
+    @Override
     public String getIcon(String input) {
         chooseNode(input);
         String chosenIcon = chosenNode.getIcon(input);
@@ -43,7 +50,7 @@ public class DownNode extends AINode {
     }
 
     @Override
-    public Optional<AINode> getNodeById(String id) {
+    protected Optional<AINode> getNodeById(String id) {
         return super.getNodeById(id).or(() -> {
             for (AINode node : nodes) {
                 Optional<AINode> option = node.getNodeById(id);

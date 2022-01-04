@@ -24,6 +24,13 @@ public class RandomSelectNode extends AINode {
     }
 
     @Override
+    protected void initializeImpl(AINode rootNode) throws EvaluationException {
+        for (AINode node : nodes.keySet()) {
+            node.initialize(rootNode);
+        }
+    }
+
+    @Override
     public String getIcon(String input) {
         chooseNode(input);
         String chosenIcon = chosenNode.getIcon(input);
@@ -55,7 +62,7 @@ public class RandomSelectNode extends AINode {
     }
 
     @Override
-    public Optional<AINode> getNodeById(String id) {
+    protected Optional<AINode> getNodeById(String id) {
         return super.getNodeById(id).or(() -> {
             for (AINode node : nodes.keySet()) {
                 Optional<AINode> option = node.getNodeById(id);

@@ -1,5 +1,6 @@
 package gov.nsa.kore.ng;
 
+import gov.nsa.kore.ng.model.EvaluationException;
 import gov.nsa.kore.ng.model.node.*;
 import gov.nsa.kore.ng.parse.*;
 import gov.nsa.kore.ng.util.ClearScript;
@@ -41,7 +42,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException, XmlException {
+    public static void main(String[] args) throws InterruptedException, IOException, XmlException, EvaluationException {
         if (args.length > 0 && !args[0].equals("--fast-splash")) {
             loadAI(Path.of(args[0]));
         }
@@ -49,9 +50,10 @@ public class Main extends Application {
         launch();
     }
 
-    public static void loadAI(Path source) throws InterruptedException, IOException, XmlException {
+    public static void loadAI(Path source) throws InterruptedException, IOException, XmlException, EvaluationException {
         try (InputStream is = Files.newInputStream(source)) {
             SELECTED_AI = XML.deserialize(is, AINode.class);
+            SELECTED_AI.initialize(SELECTED_AI);
         }
     }
 }

@@ -16,7 +16,7 @@ public class AllNode extends AINode {
     @Override
     protected EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
         List<String> compound = new LinkedList<>();
-        String continueNode = null;
+        AINode continueNode = null;
         for (AINode node : nodes) {
             if (node.appliesTo(input, true)) {
                 EvaluationResult er = node.evaluate(input, parameters.fork());
@@ -27,6 +27,13 @@ public class AllNode extends AINode {
         }
         if (getContinueNode() != null) continueNode = getContinueNode();
         return EvaluationResult.success(String.join(" ", compound), continueNode);
+    }
+
+    @Override
+    protected void initializeImpl(AINode rootNode) throws EvaluationException {
+        for (AINode node : nodes) {
+            node.initialize(rootNode);
+        }
     }
 
     @Override
@@ -45,7 +52,7 @@ public class AllNode extends AINode {
     }
 
     @Override
-    public Optional<AINode> getNodeById(String id) {
+    protected Optional<AINode> getNodeById(String id) {
         return super.getNodeById(id).or(() -> {
             for (AINode node : nodes) {
                 Optional<AINode> option = node.getNodeById(id);

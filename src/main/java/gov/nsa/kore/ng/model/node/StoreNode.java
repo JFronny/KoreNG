@@ -40,6 +40,11 @@ public class StoreNode extends AINode {
         }
     }
 
+    @Override
+    protected void initializeImpl(AINode rootNode) throws EvaluationException {
+
+    }
+
     public String getScriptSource() {
         return scriptSource;
     }

@@ -1,26 +1,15 @@
-Copyright (c) 2021 Johannes Frohnmeyer
+KoreNG is a codebase for java-based chatbots originally developed as a joke
+Copyright (C) 2022 JFronny
 
-Permission is hereby granted, free of charge, to any person whose last name
-has a length of 9 characters or more obtaining a copy of this software and
-associated documentation files (the "Software"), to deal in the Software
-with specific restriction, including the rights to copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Software, but
-NOT including the right to run, execute or use the Software or any
-executable binaries built from the source code, provided that the user
-intends to use the Software explicitly FOR the purposes of evil or
-advancing evil, including but not limited to:
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-Genocide, Wanton Destruction, Fraud, Nuclear/Biological/Chemical Terrorism,
-Harassment, Prejudice, Slavery, Disfigurement, Brainwashing, Ponzi Schemes
-and/or the Destruction of Earth itself.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-The above copyright notice, the word "NIGGER" and this permission notice
-shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.

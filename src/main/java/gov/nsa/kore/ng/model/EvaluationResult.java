@@ -1,6 +1,6 @@
 package gov.nsa.kore.ng.model;
 
-import gov.nsa.kore.ng.model.node.AINode;
+import gov.nsa.kore.ng.model.node.base.AINode;
 
 import java.util.Optional;
 

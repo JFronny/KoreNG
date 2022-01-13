@@ -4,30 +4,10 @@ import gov.nsa.kore.ng.Main;
 import gov.nsa.kore.ng.model.EvaluationException;
 import gov.nsa.kore.ng.model.EvaluationParameter;
 import gov.nsa.kore.ng.model.EvaluationResult;
-import gov.nsa.kore.ng.util.xml.XmlException;
-import meteordevelopment.starscript.Script;
-import meteordevelopment.starscript.compiler.Compiler;
-import meteordevelopment.starscript.compiler.Parser;
-import meteordevelopment.starscript.utils.Error;
+import gov.nsa.kore.ng.model.node.base.StarScriptAINode;
 import meteordevelopment.starscript.utils.StarscriptError;
 
-public class OptionNode extends AINode {
-    private final Script script;
-    private final String scriptSource;
-
-    public OptionNode(String scriptSource) throws XmlException {
-        this.scriptSource = scriptSource;
-        Parser.Result result = Parser.parse(scriptSource);
-        if (result.hasErrors()) {
-            StringBuilder issues = new StringBuilder("Discovered the following issues in the starscript " + scriptSource + ":");
-            for (Error error : result.errors) {
-                issues.append('\n').append(error.toString());
-            }
-            throw new XmlException(issues.toString());
-        }
-        this.script = Compiler.compile(result);
-    }
-
+public class OptionNode extends StarScriptAINode {
     @Override
     public EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
         parameters.loadValues(Main.STAR_SCRIPT);
@@ -39,12 +19,10 @@ public class OptionNode extends AINode {
         }
     }
 
-    @Override
-    protected void initializeImpl(AINode rootNode) throws EvaluationException {
-
-    }
-
-    public String getScriptSource() {
-        return scriptSource;
+    public static class Builder extends StarScriptAINode.Builder<OptionNode> {
+        @Override
+        protected OptionNode getInstance() {
+            return new OptionNode();
+        }
     }
 }

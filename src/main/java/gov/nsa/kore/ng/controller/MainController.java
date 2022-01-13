@@ -3,7 +3,7 @@ package gov.nsa.kore.ng.controller;
 import gov.nsa.kore.ng.Main;
 import gov.nsa.kore.ng.model.EvaluationException;
 import gov.nsa.kore.ng.model.EvaluationParameter;
-import gov.nsa.kore.ng.model.node.AINode;
+import gov.nsa.kore.ng.model.node.base.AINode;
 import gov.nsa.kore.ng.model.EvaluationResult;
 import gov.nsa.kore.ng.util.FakeLoadingProvider;
 import gov.nsa.kore.ng.util.RegexUtil;
@@ -25,7 +25,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -92,6 +91,7 @@ public class MainController implements Initializable {
                     selectIcon(inputBox.getText());
                     FakeLoadingProvider.provideFakeLoad(true, c.get()::setProgress);
                 } catch (InterruptedException | IOException | XmlException | EvaluationException e) {
+                    e.printStackTrace();
                     Platform.runLater(() -> showError(e));
                 } finally {
                     c.get().close();

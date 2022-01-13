@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class XmlParser {
-    private final Map<Class<?>, TypeAdapter<?>> typeAdapters = new HashMap<>();
+    private final Map<Class<?>, TypeAdapter> typeAdapters = new HashMap<>();
     private final Set<TypeAdapterFactory> adapterFactories = new HashSet<>();
     private final DocumentBuilder documentBuilder;
     private final Transformer transformer;
@@ -38,8 +38,10 @@ public class XmlParser {
         }
     }
 
-    public <T> XmlParser register(Class<T> klazz, TypeAdapter<T> adapter) {
-        typeAdapters.put(klazz, adapter);
+    public XmlParser register(TypeAdapter adapter, Class<?>... classes) {
+        for (Class<?> klazz : classes) {
+            typeAdapters.put(klazz, adapter);
+        }
         return this;
     }
 
@@ -69,12 +71,12 @@ public class XmlParser {
     }
 
     public <T> T deserialize(Element node, Class<T> klazz) throws XmlException {
-        return getAdapter(klazz, node.getNodeName()).deserialize(node, this);
+        return (T) getAdapter(klazz, TypeAdapter.Deserializer.class, node.getNodeName()).deserialize(node, this);
     }
 
     public <T> String serialize(T object) throws XmlException {
         Document doc = documentBuilder.newDocument();
-        TypeAdapter<T> adapter = (TypeAdapter<T>)getAdapter(object.getClass(), null);
+        TypeAdapter.Serializer<T> adapter = (TypeAdapter.Serializer<T>)getAdapter(object.getClass(), TypeAdapter.Serializer.class, null);
         Element node = doc.createElement(adapter.getNodeName());
         adapter.serializeTo(node, object, this, NodeBuilder.create(doc));
         doc.appendChild(node);
@@ -86,23 +88,28 @@ public class XmlParser {
         }
     }
 
-    public <T> TypeAdapter<T> getAdapter(Class<T> klazz, String nodeName) throws XmlException {
-        TypeAdapter<T> adapter = null;
-        for (Map.Entry<Class<?>, TypeAdapter<?>> entry : typeAdapters.entrySet()) {
-            if (klazz.isAssignableFrom(entry.getKey()) && (nodeName == null || entry.getValue().getNodeName().equals(nodeName)))
-                adapter = (TypeAdapter<T>) entry.getValue();
+    public <T, TAdapter extends TypeAdapter> TAdapter getAdapter(Class<T> klazz, Class<TAdapter> adapterClass, String nodeName) throws XmlException {
+        TAdapter adapter = null;
+        for (Map.Entry<Class<?>, TypeAdapter> entry : typeAdapters.entrySet()) {
+            if (klazz.isAssignableFrom(entry.getKey())
+                    && (nodeName == null || entry.getValue().getNodeName().equals(nodeName))
+                    && adapterClass.isAssignableFrom(entry.getValue().getClass()))
+                adapter = (TAdapter) entry.getValue();
         }
         if (adapter == null) {
             for (TypeAdapterFactory factory : adapterFactories) {
                 if (factory.appliesTo(klazz)) {
-                    adapter = factory.build(klazz);
-                    typeAdapters.put(klazz, adapter);
-                    break;
+                    TypeAdapter ad = factory.build(klazz);
+                    if (adapterClass.isAssignableFrom(ad.getClass())) {
+                        adapter = (TAdapter) ad;
+                        typeAdapters.put(klazz, adapter);
+                        break;
+                    }
                 }
             }
-            if (adapter == null)
-                throw new XmlException("No type adapter found for " + klazz.getName());
         }
+        if (adapter == null)
+            throw new XmlException("No type adapter found for " + klazz.getName());
         return adapter;
     }
 }

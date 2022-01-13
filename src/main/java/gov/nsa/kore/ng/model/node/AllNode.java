@@ -3,16 +3,12 @@ package gov.nsa.kore.ng.model.node;
 import gov.nsa.kore.ng.model.EvaluationParameter;
 import gov.nsa.kore.ng.model.EvaluationResult;
 import gov.nsa.kore.ng.model.EvaluationException;
+import gov.nsa.kore.ng.model.node.base.AINode;
+import gov.nsa.kore.ng.model.node.base.BranchAINode;
 
 import java.util.*;
 
-public class AllNode extends AINode {
-    private final Set<AINode> nodes;
-
-    public AllNode(Set<AINode> nodes) {
-        this.nodes = nodes;
-    }
-
+public class AllNode extends BranchAINode {
     @Override
     protected EvaluationResult evaluateImpl(String input, EvaluationParameter parameters) throws EvaluationException {
         List<String> compound = new LinkedList<>();
@@ -30,13 +26,6 @@ public class AllNode extends AINode {
     }
 
     @Override
-    protected void initializeImpl(AINode rootNode) throws EvaluationException {
-        for (AINode node : nodes) {
-            node.initialize(rootNode);
-        }
-    }
-
-    @Override
     public String getIcon(String input) {
         String icon = super.getIcon(input);
         if (icon != null) return icon;
@@ -51,14 +40,10 @@ public class AllNode extends AINode {
         return Set.copyOf(nodes);
     }
 
-    @Override
-    protected Optional<AINode> getNodeById(String id) {
-        return super.getNodeById(id).or(() -> {
-            for (AINode node : nodes) {
-                Optional<AINode> option = node.getNodeById(id);
-                if (option.isPresent()) return option;
-            }
-            return Optional.empty();
-        });
+    public static class Builder extends BranchAINode.Builder<AllNode> {
+        @Override
+        protected AllNode getInstance() {
+            return new AllNode();
+        }
     }
 }

@@ -2,7 +2,11 @@ package gov.nsa.kore.ng;
 
 import gov.nsa.kore.ng.model.EvaluationException;
 import gov.nsa.kore.ng.model.node.*;
-import gov.nsa.kore.ng.parse.*;
+import gov.nsa.kore.ng.model.node.base.AINode;
+import gov.nsa.kore.ng.parse.AINodeTypeAdapter;
+import gov.nsa.kore.ng.parse.StarScriptAINodeTypeAdapter;
+import gov.nsa.kore.ng.parse.StoreNodeTypeAdapter;
+import gov.nsa.kore.ng.parse.TypeAdapterBuilder;
 import gov.nsa.kore.ng.util.ClearScript;
 import gov.nsa.kore.ng.util.xml.XmlException;
 import gov.nsa.kore.ng.util.xml.XmlParser;
@@ -21,11 +25,11 @@ import java.util.Random;
 
 public class Main extends Application {
     public static final XmlParser XML = new XmlParser()
-            .register(DownNode.class, new AINodeTypeAdapter<>(new DownNodeTypeAdapter()))
-            .register(OptionNode.class, new AINodeTypeAdapter<>(new OptionNodeTypeAdapter()))
-            .register(RandomSelectNode.class, new AINodeTypeAdapter<>(new RandomSelectNodeTypeAdapter()))
-            .register(AllNode.class, new AINodeTypeAdapter<>(new AllNodeTypeAdapter()))
-            .register(StoreNode.class, new AINodeTypeAdapter<>(new StoreNodeTypeAdapter()));
+            .register(TypeAdapterBuilder.buildRecursive(DownNode.Builder::new, "down"), DownNode.class, DownNode.Builder.class)
+            .register(TypeAdapterBuilder.buildRecursive(RandomSelectNode.Builder::new, "random"), RandomSelectNode.class, RandomSelectNode.Builder.class)
+            .register(TypeAdapterBuilder.buildRecursive(AllNode.Builder::new, "all"), AllNode.class, AllNode.Builder.class)
+            .register(TypeAdapterBuilder.buildStarScrpt(OptionNode.Builder::new, "option"),OptionNode.class, OptionNode.Builder.class)
+            .register(new AINodeTypeAdapter<>(new StarScriptAINodeTypeAdapter<>(new StoreNodeTypeAdapter("store"))), StoreNode.class, StoreNode.Builder.class);
     public static final ClearScript STAR_SCRIPT = new ClearScript();
     public static final Random RND = new Random(1024);
     public static AINode SELECTED_AI;
@@ -52,8 +56,9 @@ public class Main extends Application {
 
     public static void loadAI(Path source) throws InterruptedException, IOException, XmlException, EvaluationException {
         try (InputStream is = Files.newInputStream(source)) {
-            SELECTED_AI = XML.deserialize(is, AINode.class);
-            SELECTED_AI.initialize(SELECTED_AI);
+            AINode.Builder<?> builder = XML.deserialize(is, AINode.Builder.class);
+            SELECTED_AI = builder.build();
+            builder.compile(SELECTED_AI);
         }
     }
 }

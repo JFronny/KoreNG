@@ -17,15 +17,13 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
-      - name: Echo JAVA_HOME
-        run: echo $JAVA_HOME
-      - name: Verify Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-      - name: Execute build
-        run: ./gradlew --info --stacktrace build
-      - name: Execute jlink
-        run: ./gradlew --info --stacktrace jlink
+      - name: Run Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: current
+          arguments: --info --stacktrace build jlink
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
